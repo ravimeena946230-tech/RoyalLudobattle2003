@@ -5,10 +5,13 @@ import {
   Swords,
   Download,
   Smartphone,
-  ShieldCheck 
+  ShieldCheck,
+  BookOpen,
+  ChevronRight
 } from 'lucide-react';
 import { UserProfile, ViewType } from '../types';
 import { sounds } from '../lib/soundEffects';
+import { HowToPlayModal } from '../components/HowToPlayModal';
 
 interface HomeViewProps {
   user: UserProfile;
@@ -24,6 +27,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onNavigate,
 }) => {
   const [downloading, setDownloading] = useState(false);
+  const [isHowToPlayOpen, setIsHowToPlayOpen] = useState(false);
 
   const handleOpenWhatsApp = () => {
     sounds.playClick();
@@ -155,6 +159,35 @@ export const HomeView: React.FC<HomeViewProps> = ({
 
       </div>
 
+      {/* HOW TO PLAY TRIGGER BUTTON */}
+      <button
+        id="open-how-to-play-btn"
+        type="button"
+        onClick={() => {
+          sounds.playClick();
+          setIsHowToPlayOpen(true);
+        }}
+        className="w-full min-h-[56px] px-4 py-3 rounded-2xl bg-white hover:bg-slate-50 border border-slate-200 shadow-xs flex items-center justify-between gap-3 transition-all active:scale-98 cursor-pointer text-left"
+      >
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center shrink-0">
+            <BookOpen className="w-5 h-5" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-sm font-extrabold text-slate-900 font-['Outfit'] truncate">
+              How to Play
+            </h3>
+            <p className="text-xs text-slate-500 font-medium truncate">
+              Ludo rules, room code steps &amp; payout guide
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-1 text-xs font-bold text-indigo-600 shrink-0">
+          <span>View</span>
+          <ChevronRight className="w-4 h-4" />
+        </div>
+      </button>
+
       {/* 4. PREMIUM ANDROID APK DOWNLOAD SECTION */}
       <div 
         id="apk-download-banner"
@@ -222,6 +255,13 @@ export const HomeView: React.FC<HomeViewProps> = ({
           Compatible with Android 8.0 & Above • Safe Google Play Protect verified
         </p>
       </div>
+
+      {/* How to Play Modal */}
+      <HowToPlayModal
+        isOpen={isHowToPlayOpen}
+        onClose={() => setIsHowToPlayOpen(false)}
+        onStartBattle={handleOpenBattles}
+      />
 
     </div>
   );
